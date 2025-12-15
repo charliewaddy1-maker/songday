@@ -4,12 +4,6 @@ function getQueryParam(name){
   return params.get(name);
 }
 
-function makeGameId(){
-  const ts = Date.now();
-  const rand = Math.random().toString(36).slice(2,6);
-  return `g${ts}${rand}`;
-}
-
 // Escape HTML helper
 function escapeHtml(str){
   if (!str) return "";
@@ -19,6 +13,7 @@ function escapeHtml(str){
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+
   // ===== START page logic =====
   const createBtn = document.getElementById("createGame");
   if (createBtn){
@@ -27,20 +22,16 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!raw) { alert("Enter at least one player name."); return; }
       const names = raw.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
       if (names.length === 0) { alert("Enter at least one player name."); return; }
-      // Get last game number from localStorage, default to 0
-let lastGameNum = parseInt(localStorage.getItem("songday_lastGameNum") || "0", 10);
 
-// Increment to get the new game number
-lastGameNum += 1;
-
-// Save back to localStorage for next game
-localStorage.setItem("songday_lastGameNum", lastGameNum);
-
-// Use sequential ID
-const gameId = `Game${lastGameNum}`;
+      // Sequential Game ID logic
+      let lastGameNum = parseInt(localStorage.getItem("songday_lastGameNum") || "0", 10);
+      lastGameNum += 1;
+      localStorage.setItem("songday_lastGameNum", lastGameNum);
+      const gameId = `Game${lastGameNum}`;
 
       localStorage.setItem(`songday_game_${gameId}_players`, JSON.stringify(names));
 
+      // Display game ID and links
       const info = document.getElementById("gameInfo");
       info.innerHTML = `<p class="small">Game ID: <strong>${gameId}</strong></p>
                         <p class="small">Share these links with players (or copy them).</p>`;
@@ -53,7 +44,14 @@ const gameId = `Game${lastGameNum}`;
         out.innerHTML += `<p>Player ${idx+1} (${name}): <a href="${link}" target="_blank">${link}</a></p>`;
       });
 
-      out.innerHTML += `<hr/><p><a class="btn" href="playlist.html?game=${gameId}">View Combined Playlist (Game ${gameId})</a></p>`;
+      // Provide playlist link and download link
+      out.innerHTML += `<hr/>
+                        <p>
+                          <a class="btn" href="playlist.html?game=${gameId}">View Combined Playlist</a>
+                        </p>
+                        <p>
+                          <a class="btn" href="playlist.html?game=${gameId}&download=true">Download Playlist CSV</a>
+                        </p>`;
     });
   }
 
@@ -115,7 +113,7 @@ const gameId = `Game${lastGameNum}`;
     const game = getQueryParam("game");
     const info = document.getElementById("playlistInfo");
     if (!game){
-      info.innerHTML = '<span class="small">Provide a game id in the URL like ?game=GAMEID</span>';
+      info.innerHTML = '<span class="small">Provide a game id in the URL like ?game=Game1</span>';
       return;
     }
     info.innerHTML = `Game ID: <strong>${game}</strong>`;
@@ -147,5 +145,38 @@ const gameId = `Game${lastGameNum}`;
     let html = `<table><thead><tr><th>#</th><th>Song title</th><th>Artist</th><th>Link</th><th>Player</th></tr></thead><tbody>`;
     all.forEach((s, idx) => {
       const link = s.link ? `<a href="${s.link}" target="_blank">play</a>` : "";
-      html += `<tr><td>${idx+1}</td><td>${escapeHtml(s.title)}</td><td>${escapeHtml(s.artist
+      html += `<tr><td>${idx+1}</td><td>${escapeHtml(s.title)}</td><td>${escapeHtml(s.artist)}</td><td>${link}</td><td>${escapeHtml(s.player)}</td></tr>`;
+    });
+    html += `</tbody></table>`;
+    playlistContainer.innerHTML = html;
 
+    // ===== Download button logic =====
+    const downloadBtn = document.getElementById("downloadPlaylist");
+    if (downloadBtn){
+      downloadBtn.addEventListener("click", () => {
+        let csv = "Title,Artist,Link,Player\n";
+        all.forEach(song => {
+          const safeTitle = song.title.replace(/,/g, " ");
+          const safeArtist = song.artist.replace(/,/g, " ");
+          const safePlayer = song.player.replace(/,/g, " ");
+          csv += `${safeTitle},${safeArtist},${song.link},${safePlayer}\n`;
+        });
+        const blob = new Blob([csv], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `songday_playlist_${game}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+    }
+
+    // ===== Auto-download if ?download=true in URL =====
+    if (window.location.search.includes("download=true") && downloadBtn){
+      downloadBtn.click();
+    }
+  }
+
+}); // end DOMContentLoaded
