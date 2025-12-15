@@ -144,3 +144,29 @@ function escapeHtml(str){
   if (!str) return "";
   return String(str).replace(/[&<>"']/g, function(m){ return ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]; });
 }
+const downloadBtn = document.getElementById("downloadPlaylist");
+if (downloadBtn) {
+  downloadBtn.addEventListener("click", () => {
+    if (!game) return alert("Missing game ID.");
+    
+    // Create CSV content
+    let csv = "Title,Artist,Link,Player\n";
+    all.forEach(song => {
+      const safeTitle = song.title.replace(/,/g, " "); // remove commas
+      const safeArtist = song.artist.replace(/,/g, " ");
+      const safePlayer = song.player.replace(/,/g, " ");
+      csv += `${safeTitle},${safeArtist},${song.link},${safePlayer}\n`;
+    });
+
+    // Create a blob and trigger download
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `songday_playlist_${game}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+}
