@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="stylesheet" href="style.css" />
-<script src="script.js" defer></script>
-<title>Start Game - SongDay</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+  <title>SongDay - Start Game</title>
 </head>
 <body>
   <h1>Start a New SongDay Game</h1>
-  <p>Enter player names (one per line). The host will generate a Game ID and per-player links.</p>
-  <textarea id="playerNames" rows="8" cols="40" placeholder="Alice
-Bob
-Charlie"></textarea>
-  <br/>
-  <button id="createGame" class="btn">Create Game & Generate Links</button>
-  <div id="gameInfo" style="margin-top:20px"></div>
-  <div id="linksOutput" style="margin-top:12px"></div>
-  <p><a href="index.html" class="btn">Back</a></p>
+  <p>Enter player names (one per line):</p>
+  <textarea id="playerNames" rows="10" cols="30" placeholder="Player 1&#10;Player 2&#10;Player 3"></textarea>
+  <br>
+  <button id="createGame" class="btn">Create Game</button>
+
+  <hr>
+  <div id="gameInfo"></div>
+  <div id="linksOutput"></div>
 </body>
 </html>
