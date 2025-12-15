@@ -27,7 +27,18 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!raw) { alert("Enter at least one player name."); return; }
       const names = raw.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
       if (names.length === 0) { alert("Enter at least one player name."); return; }
-      const gameId = makeGameId();
+      // Get last game number from localStorage, default to 0
+let lastGameNum = parseInt(localStorage.getItem("songday_lastGameNum") || "0", 10);
+
+// Increment to get the new game number
+lastGameNum += 1;
+
+// Save back to localStorage for next game
+localStorage.setItem("songday_lastGameNum", lastGameNum);
+
+// Use sequential ID
+const gameId = `Game${lastGameNum}`;
+
       localStorage.setItem(`songday_game_${gameId}_players`, JSON.stringify(names));
 
       const info = document.getElementById("gameInfo");
