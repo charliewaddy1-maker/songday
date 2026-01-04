@@ -1,7 +1,32 @@
-body {font-family: Arial, sans-serif; margin:40px; text-align:center; background:#fafafa;}
-.btn {display:inline-block; padding:10px 20px; margin:10px; background:#333; color:#fff; text-decoration:none; border-radius:5px;}
-textarea {width:100%; max-width:600px; margin:10px 0; font-family:inherit;}
-.song-item input {margin:5px; padding:8px; width:250px;}
-table {margin:0 auto; border-collapse:collapse; width:90%; max-width:900px;}
-table th, table td {padding:8px; border-bottom:1px solid #eee; text-align:left;}
-.small {font-size:0.9rem;color:#666;}
+body {
+  font-family: Arial, sans-serif;
+  margin: 40px;
+  text-align: center;
+  background: #fafafa;
+}
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 10px;
+  background: #333;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+}
+input, textarea {
+  margin: 5px;
+  padding: 8px;
+  width: 250px;
+}
+.song-item {
+  margin: 10px;
+}
+table {
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+}
+.small { font-size: 0.9em; color: #555; }
