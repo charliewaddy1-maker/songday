@@ -1,17 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="stylesheet" href="style.css" />
-<script src="script.js" defer></script>
-<title>Combined Playlist - SongDay</title>
-</head>
-<body>
-  <h1>Combined Playlist (Random Order)</h1>
-  <p id="playlistInfo"></p>
-  <div id="playlistContainer"></div>
-  <p><a href="index.html" class="btn">Back</a></p>
-</body>
-</html>
-<button id="downloadPlaylist" class="btn">Download Playlist</button>
+async function loadPlaylist(){
+  const gameId = getQueryParam("game");
+  if (!gameId) return document.getElementById("playlistContainer").innerHTML = "Missing game ID";
+
+  const res = await fetch(`https://songday-api.YOURACCOUNT.workers.dev/playlist?game=${gameId}`);
+  const data = await res.json();
+  const container = document.getElementById("playlistContainer");
+
+  if (!res.ok || !data.songs.length){
+    container.innerHTML = "<p>No submissions yet.</p>";
+    return;
+  }
+
+  let html = `<table><thead><tr><th>#</th><th>Title</th><th>Artist</th><th>Link</th><th>Player</th></tr></thead><tbody>`;
+  data.songs.forEach((s,i) => {
+    const link = s.link ? `<a href="${s.link}" target="_blank">play</a>` : "";
+    html += `<tr><td>${i+1}</td><td>${s.title}</td><td>${s.artist}</td><td>${link}</td><td>${s.player}</td></tr>`;
+  });
+  html += `</tbody></table>`;
+  container.innerHTML = html;
+
+  // Download button
+  document.getElementById("downloadPlaylist").onclick = () => {
+    window.open(`https://songday-api.YOURACCOUNT.workers.dev/playlist-csv?game=${gameId}`, "_blank");
+  };
+}
+loadPlaylist();
