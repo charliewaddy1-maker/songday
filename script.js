@@ -4,7 +4,6 @@ function getQueryParam(name){
   return params.get(name);
 }
 
-// --- START Page ---
 document.addEventListener("DOMContentLoaded", () => {
 
   // ---------- START / Create Game ----------
@@ -104,9 +103,11 @@ document.addEventListener("DOMContentLoaded", () => {
       html+="</tbody></table>";
       playlistContainer.innerHTML=html;
 
-      // download button
+      // Download CSV
       const downloadBtn = document.getElementById("downloadPlaylist");
-      downloadBtn.onclick=()=> window.open(`https://songday-api.charlie-waddy1.workers.dev/playlist-csv?game=${game}`,"_blank");
+      if(downloadBtn){
+        downloadBtn.onclick=()=> window.open(`https://songday-api.charlie-waddy1.workers.dev/playlist-csv?game=${game}`,"_blank");
+      }
     }
     loadPlaylist();
   }
