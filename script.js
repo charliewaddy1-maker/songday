@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const players = raw.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
       if(players.length === 0) { alert("Enter at least one player name"); return; }
 
-      const res = await fetch("https://songday-api.YOURACCOUNT.workers.dev/create-game", {
+      const res = await fetch("https://songday-api.charlie-waddy1.workers.dev/create-game", {
         method: "POST",
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify({players})
@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       if(songs.length===0){ alert("Enter at least one song"); return; }
 
-      const res = await fetch("https://songday-api.YOURACCOUNT.workers.dev/submit-song", {
+      const res = await fetch("https://songday-api.charlie-waddy1.workers.dev/submit-song", {
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body: JSON.stringify({gameId:game, player, songs})
@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if(!game){ info.textContent="Missing game ID"; return; }
 
     async function loadPlaylist(){
-      const res = await fetch(`https://songday-api.YOURACCOUNT.workers.dev/playlist?game=${game}`);
+      const res = await fetch(`https://songday-api.charlie-waddy1.workers.dev/playlist?game=${game}`);
       const data = await res.json();
       if(!res.ok || !data.songs.length){ playlistContainer.innerHTML="<p>No submissions yet.</p>"; return; }
 
@@ -106,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // download button
       const downloadBtn = document.getElementById("downloadPlaylist");
-      downloadBtn.onclick=()=> window.open(`https://songday-api.YOURACCOUNT.workers.dev/playlist-csv?game=${game}`,"_blank");
+      downloadBtn.onclick=()=> window.open(`https://songday-api.charlie-waddy1.workers.dev/playlist-csv?game=${game}`,"_blank");
     }
     loadPlaylist();
   }
