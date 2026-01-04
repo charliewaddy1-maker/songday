@@ -1,19 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="stylesheet" href="style.css" />
-<script src="script.js" defer></script>
-<title>Submit Songs - SongDay</title>
-</head>
-<body>
-  <h1 id="submitHeading">Submit Your Songs</h1>
-  <p id="playerLabel"></p>
-  <p>Enter up to 10 songs (Title and Artist required).</p>
-  <form id="songForm"></form>
-  <button id="saveSongs" class="btn">Save Songs</button>
-  <p id="status" style="margin-top:12px;color:green"></p>
-  <p><a href="index.html" class="btn">Home</a></p>
-</body>
-</html>
+document.getElementById("saveSongs").addEventListener("click", async (e) => {
+  e.preventDefault();
+  const gameId = getQueryParam("game");
+  const player = getQueryParam("player");
+  if (!gameId || !player) return alert("Missing game or player info");
+
+  const songs = [];
+  for (let i=1;i<=10;i++){
+    const title = document.getElementById(`title${i}`).value.trim();
+    const artist = document.getElementById(`artist${i}`).value.trim();
+    const link = document.getElementById(`link${i}`).value.trim();
+    if (title && artist) songs.push({title, artist, link});
+  }
+  if (songs.length === 0) return alert("Enter at least one song");
+
+  const res = await fetch("https://songday-api.YOURACCOUNT.workers.dev/submit-song", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({gameId, player, songs})
+  });
+
+  const data = await res.json();
+  if (res.ok){
+    document.getElementById("status").textContent = "Thank you! Songs submitted.";
+    document.getElementById("saveSongs").disabled = true;
+  } else {
+    alert(data.error || "Submission failed");
+  }
+});
