@@ -1,29 +1,18 @@
-document.getElementById("saveSongs").addEventListener("click", async (e) => {
-  e.preventDefault();
-  const gameId = getQueryParam("game");
-  const player = getQueryParam("player");
-  if (!gameId || !player) return alert("Missing game or player info");
-
-  const songs = [];
-  for (let i=1;i<=10;i++){
-    const title = document.getElementById(`title${i}`).value.trim();
-    const artist = document.getElementById(`artist${i}`).value.trim();
-    const link = document.getElementById(`link${i}`).value.trim();
-    if (title && artist) songs.push({title, artist, link});
-  }
-  if (songs.length === 0) return alert("Enter at least one song");
-
-  const res = await fetch("https://songday-api.YOURACCOUNT.workers.dev/submit-song", {
-    method: "POST",
-    headers: {"Content-Type":"application/json"},
-    body: JSON.stringify({gameId, player, songs})
-  });
-
-  const data = await res.json();
-  if (res.ok){
-    document.getElementById("status").textContent = "Thank you! Songs submitted.";
-    document.getElementById("saveSongs").disabled = true;
-  } else {
-    alert(data.error || "Submission failed");
-  }
-});
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="style.css" />
+<script src="script.js" defer></script>
+<title>SongDay - Submit Songs</title>
+</head>
+<body>
+<h1>Submit Your Songs</h1>
+<p id="playerLabel"></p>
+<form id="songForm"></form>
+<button id="saveSongs" class="btn">Save Songs</button>
+<p id="status" class="small"></p>
+<a href="start.html" class="btn">Back</a>
+</body>
+</html>
