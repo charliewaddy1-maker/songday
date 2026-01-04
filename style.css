@@ -4,6 +4,10 @@ body {
   text-align: center;
   background: #fafafa;
 }
+textarea {
+  width: 300px;
+  margin: 10px;
+}
 .btn {
   display: inline-block;
   padding: 10px 20px;
@@ -12,8 +16,9 @@ body {
   color: #fff;
   text-decoration: none;
   border-radius: 5px;
+  cursor: pointer;
 }
-input, textarea {
+input {
   margin: 5px;
   padding: 8px;
   width: 250px;
@@ -22,11 +27,14 @@ input, textarea {
   margin: 10px;
 }
 table {
+  width: 100%;
   border-collapse: collapse;
-  margin: 0 auto;
+  margin-top: 20px;
 }
-table th, table td {
-  border: 1px solid #ccc;
-  padding: 5px 10px;
+table, th, td {
+  border: 1px solid #333;
 }
-.small { font-size: 0.9em; color: #555; }
+th, td {
+  padding: 8px;
+  text-align: left;
+}
