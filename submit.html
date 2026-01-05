@@ -1,55 +1,18 @@
-const saveBtn = document.getElementById("saveSongs");
-const status = document.getElementById("status");
-const form = document.getElementById("songForm");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <title>SongDay - Submit Songs</title>
+</head>
+<body>
+  <h1>Submit Songs</h1>
+  <p id="playerLabel"></p>
+  <form id="songForm"></form>
+  <button id="saveSongs">Submit Songs</button>
+  <p id="status"></p>
 
-if (saveBtn && form) {
-  saveBtn.addEventListener("click", async (e) => {
-    e.preventDefault();
-
-    const gameId = new URLSearchParams(window.location.search).get("game");
-    const player = new URLSearchParams(window.location.search).get("player");
-
-    if (!gameId || !player) {
-      alert("Missing game or player information in URL.");
-      return;
-    }
-
-    // Gather songs from input
-    const songs = [];
-    for (let i = 1; i <= 10; i++) {
-      const title = document.getElementById(`title${i}`)?.value.trim();
-      const artist = document.getElementById(`artist${i}`)?.value.trim();
-      const link = document.getElementById(`link${i}`)?.value.trim();
-      if (title && artist) {
-        songs.push({ title, artist, link });
-      }
-    }
-
-    if (songs.length === 0) {
-      alert("Enter at least one song (title and artist).");
-      return;
-    }
-
-    try {
-      const res = await fetch("https://songday-api.charlie-waddy1.workers.dev/submit-song", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ gameId, player, songs })
-      });
-
-      const data = await res.json();
-
-      if (data.ok) {
-        status.style.color = "green";
-        status.textContent = "Thank you! Songs submitted — waiting on full playlist to be created by the host.";
-        saveBtn.disabled = true;
-      } else {
-        alert("Error submitting songs: " + data.message);
-      }
-
-    } catch (err) {
-      console.error(err);
-      alert("Network error: could not submit songs.");
-    }
-  });
-}
+  <script src="script.js"></script>
+</body>
+</html>
