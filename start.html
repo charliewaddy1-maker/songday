@@ -1,36 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>SongDay – Start Game</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SongDay Start</title>
+<link rel="stylesheet" href="style.css" />
+<script src="script.js" defer></script>
 </head>
 <body>
+  <h1>SongDay - Create Game</h1>
 
-  <h1>🎵 SongDay</h1>
   <p>Enter player names (one per line):</p>
-
-  <textarea id="playerNames" rows="6" placeholder="Alice&#10;Bob&#10;Charlie"></textarea>
-  <br><br>
+  <textarea id="playerNames" rows="5" cols="30"></textarea><br/>
 
   <button id="createGame">Create Game</button>
+  <p id="error" class="error"></p>
 
-  <p id="error" style="color:red;"></p>
-
-  <!-- GAME INFO (HIDDEN UNTIL CREATED) -->
-  <div id="gameSection" style="display:none; margin-top:20px;">
+  <div id="gameSection" style="display:none;">
+    <h2>Game Created!</h2>
     <p>Game ID: <strong id="gameIdLabel"></strong></p>
-
-    <h3>Player Links</h3>
     <div id="linksOutput"></div>
-
-    <hr>
-
-    <a id="viewPlaylistBtn" target="_blank">🎧 View Playlist</a>
-    <br><br>
-    <button id="downloadCsvBtn">⬇️ Download CSV</button>
+    <a id="viewPlaylistBtn" class="btn" href="#">View Playlist</a>
+    <button id="downloadCsvBtn" class="btn">Download CSV</button>
   </div>
-
-  <script src="script.js"></script>
 </body>
 </html>
