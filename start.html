@@ -1,23 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SongDay - Start Game</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>SongDay – Start Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Start a New SongDay Game</h1>
-  <p>Enter one player per line:</p>
-  <textarea id="playerNames" rows="10" cols="30" placeholder="Alice&#10;Bob&#10;Charlie"></textarea>
-  <br>
+  <h1>Start a SongDay Game</h1>
+
+  <p>Enter one player name per line:</p>
+  <textarea id="playerNames" rows="8" style="width:300px;"></textarea>
+
+  <br><br>
   <button id="createGame" class="btn">Create Game</button>
 
-  <h2>Game Info</h2>
-  <div id="gameInfo"></div>
-  <div id="linksOutput"></div>
+  <div id="error" style="color:red;margin-top:10px;"></div>
 
-  <a href="index.html" class="btn">Back</a>
+  <hr>
+
+  <div id="gameSection" style="display:none;">
+    <h2>Game Created</h2>
+
+    <p><strong>Game ID:</strong> <span id="gameIdLabel"></span></p>
+
+    <h3>Player Invite Links</h3>
+    <div id="linksOutput"></div>
+
+    <hr>
+
+    <h3>Host Controls</h3>
+    <a id="viewPlaylistBtn" class="btn" target="_blank">View Playlist</a>
+    <a id="downloadCsvBtn" class="btn">Download CSV</a>
+  </div>
 
   <script src="script.js"></script>
 </body>
