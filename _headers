@@ -1,0 +1,2 @@
+/*
+  Content-Security-Policy: default-src 'self'; connect-src 'self' https://songday-api.charlie-waddy1.workers.dev; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';
