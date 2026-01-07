@@ -42,37 +42,38 @@ if (createBtn) {
   };
 }
 
-/* =====================
-   SUBMIT SONGS (PLAYER)
-===================== */
-let songs = [];
+// SUBMIT SONGS
+if (url.pathname.startsWith("/submit-song") && request.method === "POST") {
+  const body = await request.json();
+  const { gameId, player, songs } = body;
 
-const addSong = document.getElementById("addSong");
-if (addSong) {
-  document.getElementById("title").textContent =
-    `Submit songs for ${player}`;
+  const gameKey = `game:${gameId}`;
+  const gameRaw = await env.SONGDAY_KV.get(gameKey);
 
-  addSong.onclick = () => {
-    songs.push({
-      title: songTitle.value,
-      artist: artist.value,
-      link: link.value
-    });
+  if (!gameRaw) {
+    return new Response(
+      JSON.stringify({ ok: false, message: "Game not found" }),
+      { status: 404, headers: corsHeaders }
+    );
+  }
 
-    songTitle.value = artist.value = link.value = "";
-  };
+  const game = JSON.parse(gameRaw);
 
-  document.getElementById("submitSongs").onclick = async () => {
-    const res = await fetch(`${API_BASE}/submit-song`, {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({ game, player, songs })
-    });
+  if (game.songs[player]) {
+    return new Response(
+      JSON.stringify({ ok: false, message: "Already submitted" }),
+      { status: 400, headers: corsHeaders }
+    );
+  }
 
-    const data = await res.json();
-    document.getElementById("msg").textContent =
-      data.ok ? "Submitted 🎉" : "Error submitting songs";
-  };
+  game.songs[player] = songs;
+
+  await env.SONGDAY_KV.put(gameKey, JSON.stringify(game));
+
+  return new Response(
+    JSON.stringify({ ok: true }),
+    { headers: corsHeaders }
+  );
 }
 
 /* =====================
