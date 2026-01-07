@@ -108,3 +108,81 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 });
+
+/* ======================
+   SUBMIT SONGS PAGE
+====================== */
+const submitBtn = document.getElementById("submitSongs");
+
+if (submitBtn) {
+  const params = new URLSearchParams(window.location.search);
+  const game = params.get("game");
+  const player = params.get("player");
+
+  const info = document.getElementById("submitInfo");
+  const form = document.getElementById("songForm");
+  const errorEl = document.getElementById("submitError");
+  const successEl = document.getElementById("submitSuccess");
+
+  if (!game || !player) {
+    info.textContent = "Invalid submission link.";
+  } else {
+    info.textContent = `Submitting for game ${game} as ${player}`;
+  }
+
+  // Generate 10 song inputs
+  for (let i = 1; i <= 10; i++) {
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <input placeholder="Song title ${i}" id="title${i}" />
+      <input placeholder="Artist ${i}" id="artist${i}" />
+      <input placeholder="Link (optional)" id="link${i}" />
+    `;
+    form.appendChild(div);
+  }
+
+  submitBtn.addEventListener("click", async () => {
+    errorEl.textContent = "";
+    successEl.textContent = "";
+
+    if (!game || !player) {
+      errorEl.textContent = "Missing game or player.";
+      return;
+    }
+
+    const songs = [];
+
+    for (let i = 1; i <= 10; i++) {
+      const title = document.getElementById(`title${i}`).value.trim();
+      const artist = document.getElementById(`artist${i}`).value.trim();
+      const link = document.getElementById(`link${i}`).value.trim();
+
+      if (title && artist) {
+        songs.push({ title, artist, link });
+      }
+    }
+
+    if (songs.length === 0) {
+      errorEl.textContent = "Please enter at least one song.";
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/submit-songs`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ gameId: game, player, songs })
+      });
+
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error);
+
+      successEl.textContent = "Songs submitted successfully!";
+      submitBtn.disabled = true;
+
+    } catch (err) {
+      errorEl.textContent = "Error submitting songs.";
+      console.error(err);
+    }
+  });
+}
