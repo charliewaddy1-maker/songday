@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vote</title>
+</head>
+<body>
+
+<h2>Vote for your favourites</h2>
+<div id="voteList"></div>
+
+<button id="submitVotes">Submit Votes</button>
+
+<p id="msg"></p>
+
+<script src="/script.js"></script>
+</body>
+</html>
