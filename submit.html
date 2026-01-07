@@ -1,18 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>SongDay Submit Songs</title>
-<link rel="stylesheet" href="style.css" />
-<script src="script.js" defer></script>
+  <title>Submit Songs</title>
 </head>
 <body>
-  <h1>Submit Your Songs</h1>
-  <p id="playerLabel"></p>
-  <form id="songForm"></form>
-  <button id="saveSongs">Submit Songs</button>
-  <p id="status" class="status"></p>
-  <a href="start.html" class="btn">Back</a>
+
+<h2 id="title"></h2>
+
+<input id="songTitle" placeholder="Song title"><br>
+<input id="artist" placeholder="Artist"><br>
+<input id="link" placeholder="Spotify / YouTube link"><br><br>
+
+<button id="addSong">Add Song</button>
+<button id="submitSongs">Submit All</button>
+
+<p id="msg"></p>
+
+<script src="/script.js"></script>
 </body>
 </html>
