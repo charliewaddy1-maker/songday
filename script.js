@@ -63,7 +63,7 @@ if (addSong) {
   };
 
   document.getElementById("submitSongs").onclick = async () => {
-    const res = await fetch(`${API_BASE}/submit-songs`, {
+    const res = await fetch(`${API_BASE}/submit-song`, {
       method: "POST",
       headers: {"Content-Type":"application/json"},
       body: JSON.stringify({ game, player, songs })
