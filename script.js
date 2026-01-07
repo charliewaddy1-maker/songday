@@ -1,113 +1,84 @@
 const API_BASE = "https://songday-api.charlie-waddy1.workers.dev";
-const qs = new URLSearchParams(window.location.search);
-const game = qs.get("game");
-const player = qs.get("player");
 
-/* =====================
-   START PAGE (HOST)
-===================== */
-const createBtn = document.getElementById("createGame");
+document.addEventListener("DOMContentLoaded", () => {
 
-if (createBtn) {
-  createBtn.onclick = async () => {
-    const names = document.getElementById("players").value
-      .split("\n")
-      .map(n => n.trim())
-      .filter(Boolean);
-
-    if (!names.length) return;
-
-    const res = await fetch(`${API_BASE}/create-game`, {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({ players: names })
+  // START PAGE
+  const startBtn = document.getElementById("startGame");
+  if (startBtn) {
+    startBtn.addEventListener("click", async () => {
+      try {
+        const res = await fetch(`${API_BASE}/create-game`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ players: ["Player1"] })
+        });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.message);
+        // Redirect player to submit page
+        window.location.href = `submit.html?game=${data.gameId}&player=Player1`;
+      } catch (err) {
+        console.error(err);
+        alert("Error creating game: " + err.message);
+      }
     });
-
-    const data = await res.json();
-    if (!data.ok) return alert("Failed to create game");
-
-    document.getElementById("gameArea").style.display = "block";
-    document.getElementById("gameId").textContent = data.gameId;
-
-    const links = document.getElementById("links");
-    links.innerHTML = "";
-
-    names.forEach(p => {
-      const url = `/submit.html?game=${data.gameId}&player=${encodeURIComponent(p)}`;
-      links.innerHTML += `<p>${p}: <a href="${url}" target="_blank">${url}</a></p>`;
-    });
-
-    document.getElementById("playlistLink").href =
-      `/playlist.html?game=${data.gameId}`;
-  };
-}
-
-// SUBMIT SONGS
-if (url.pathname.startsWith("/submit-song") && request.method === "POST") {
-  const body = await request.json();
-  const { gameId, player, songs } = body;
-
-  const gameKey = `game:${gameId}`;
-  const gameRaw = await env.SONGDAY_KV.get(gameKey);
-
-  if (!gameRaw) {
-    return new Response(
-      JSON.stringify({ ok: false, message: "Game not found" }),
-      { status: 404, headers: corsHeaders }
-    );
   }
 
-  const game = JSON.parse(gameRaw);
+  // SUBMIT PAGE
+  const form = document.getElementById("songForm");
+  if (form) {
+    const player = new URLSearchParams(window.location.search).get("player");
+    const game = new URLSearchParams(window.location.search).get("game");
+    const label = document.getElementById("playerLabel");
+    if (label) label.textContent = `Game: ${game}, Player: ${player}`;
 
-  if (game.songs[player]) {
-    return new Response(
-      JSON.stringify({ ok: false, message: "Already submitted" }),
-      { status: 400, headers: corsHeaders }
-    );
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const title = document.getElementById("title").value.trim();
+      const artist = document.getElementById("artist").value.trim();
+      if (!title || !artist) return alert("Enter song title and artist.");
+
+      try {
+        const res = await fetch(`${API_BASE}/submit-song`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ gameId: game, player, songs: [{ title, artist }] })
+        });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.message);
+        window.location.href = `playlist.html?game=${game}`;
+      } catch (err) {
+        console.error(err);
+        alert("Error submitting song: " + err.message);
+      }
+    });
   }
 
-  game.songs[player] = songs;
+  // PLAYLIST PAGE
+  const playlistContainer = document.getElementById("playlistContainer");
+  const voteBtn = document.getElementById("voteBtn");
+  if (playlistContainer && voteBtn) {
+    const game = new URLSearchParams(window.location.search).get("game");
 
-  await env.SONGDAY_KV.put(gameKey, JSON.stringify(game));
+    async function loadPlaylist() {
+      try {
+        const res = await fetch(`${API_BASE}/playlist?game=${game}`);
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.message);
 
-  return new Response(
-    JSON.stringify({ ok: true }),
-    { headers: corsHeaders }
-  );
-}
+        const songsHtml = [];
+        for (const player in data.songs) {
+          data.songs[player].forEach(s => {
+            songsHtml.push(`<p>${s.title} — ${s.artist} (Submitted by ${player})</p>`);
+          });
+        }
+        playlistContainer.innerHTML = songsHtml.join("");
+      } catch (err) {
+        playlistContainer.innerHTML = `<p>Error loading playlist: ${err.message}</p>`;
+      }
+    }
 
-/* =====================
-   PLAYLIST (HOST)
-===================== */
-const songTable = document.getElementById("songs");
-if (songTable) {
-  fetch(`${API_BASE}/playlist?game=${game}`)
-    .then(r => r.json())
-    .then(data => {
-      data.songs.forEach(s => {
-        songTable.innerHTML += `
-          <tr>
-            <td>${s.title}</td>
-            <td>${s.artist}</td>
-            <td><a href="${s.link}" target="_blank">Link</a></td>
-            <td>${s.player}</td>
-          </tr>`;
-      });
-    });
+    voteBtn.addEventListener("click", () => alert("Vote submitted! (placeholder)"));
 
-  document.getElementById("downloadCsv").onclick = () => {
-    window.location =
-      `${API_BASE}/download?game=${game}`;
-  };
-
-  document.getElementById("startVoting").onclick = async () => {
-    await fetch(`${API_BASE}/start-voting`, {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({ game })
-    });
-
-    document.getElementById("status").textContent =
-      "Voting started!";
-  };
-}
+    loadPlaylist();
+  }
+});
