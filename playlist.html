@@ -1,31 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Playlist</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SongDay - Playlist</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
-
-<h2>Playlist</h2>
-
-<table border="1">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Artist</th>
-      <th>Link</th>
-      <th>Player</th>
-    </tr>
-  </thead>
-  <tbody id="songs"></tbody>
-</table>
-
-<br>
-<button id="downloadCsv">Download CSV</button>
-<br><br>
-<button id="startVoting">Start Voting</button>
-
-<p id="status"></p>
-
-<script src="/script.js"></script>
+  <h1>Playlist & Vote</h1>
+  <div id="playlistContainer"></div>
+  <button id="voteBtn">Vote</button>
+  <div id="status"></div>
 </body>
 </html>
