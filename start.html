@@ -8,20 +8,31 @@
 <script src="script.js" defer></script>
 </head>
 <body>
-  <h1>SongDay - Create Game</h1>
 
-  <p>Enter player names (one per line):</p>
-  <textarea id="playerNames" rows="5" cols="30"></textarea><br/>
+<h1>SongDay – Create Game</h1>
 
-  <button id="createGame">Create Game</button>
-  <p id="error" class="error"></p>
+<p>Enter player names (one per line):</p>
+<textarea id="playerNames" rows="6" cols="30"></textarea>
 
-  <div id="gameSection" style="display:none;">
-    <h2>Game Created!</h2>
-    <p>Game ID: <strong id="gameIdLabel"></strong></p>
-    <div id="linksOutput"></div>
-    <a id="viewPlaylistBtn" class="btn" href="#">View Playlist</a>
-    <button id="downloadCsvBtn" class="btn">Download CSV</button>
-  </div>
+<br><br>
+<button id="createGame">Create Game</button>
+
+<p id="error" style="color:red;"></p>
+
+<hr>
+
+<div id="gameSection" style="display:none;">
+  <h2>Game Created</h2>
+
+  <p>Game ID: <strong id="gameIdLabel"></strong></p>
+
+  <h3>Player Links</h3>
+  <div id="linksOutput"></div>
+
+  <br>
+  <a id="viewPlaylistBtn" class="btn" href="#">View Playlist</a>
+  <button id="downloadCsvBtn" class="btn">Download CSV</button>
+</div>
+
 </body>
 </html>
