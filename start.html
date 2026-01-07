@@ -1,33 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>SongDay – Start</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SongDay - Start</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
+  <h1>SongDay</h1>
+  <p>Step 1: Start your game</p>
 
-<h2>Create Game</h2>
+  <button id="startGame">Start Game (1 Player)</button>
 
-<textarea id="players" placeholder="One player per line"></textarea>
-<br><br>
-<button id="createGame">Create Game</button>
-
-<p id="error" style="color:red;"></p>
-
-<hr>
-
-<div id="gameArea" style="display:none;">
-  <h3>Game ID: <span id="gameId"></span></h3>
-
-  <h4>Player Submission Links</h4>
-  <div id="links"></div>
-
-  <hr>
-
-  <a id="playlistLink">
-    <button>View Playlist</button>
-  </a>
-</div>
-
-<script src="/script.js"></script>
+  <div id="error" class="error"></div>
 </body>
 </html>
