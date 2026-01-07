@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Results</title>
+</head>
+<body>
+
+<h2>🏆 Top 50</h2>
+<ol id="results"></ol>
+
+<script src="/script.js"></script>
+</body>
+</html>
