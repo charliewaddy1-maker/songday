@@ -29,22 +29,31 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function showGame(gameId, players){
-    const section = document.getElementById("gameSection");
-    if (!section) return;
-    section.style.display = "block";
-    document.getElementById("gameIdLabel").textContent = gameId;
+ function showGame(gameId, players) {
+  const section = document.getElementById("gameSection");
+  const linksOut = document.getElementById("linksOutput");
+  const gameIdLabel = document.getElementById("gameIdLabel");
+  const viewBtn = document.getElementById("viewPlaylistBtn");
+  const downloadBtn = document.getElementById("downloadCsvBtn");
 
-    const linksOut = document.getElementById("linksOutput");
-    linksOut.innerHTML = "";
-    players.forEach(name=>{
-      const link = `${location.origin}/submit.html?game=${gameId}&player=${encodeURIComponent(name)}`;
-      linksOut.innerHTML += `<p><strong>${name}:</strong> <a href="${link}" target="_blank">${link}</a></p>`;
-    });
-
-    document.getElementById("viewPlaylistBtn").href = `/playlist.html?game=${gameId}`;
-    document.getElementById("downloadCsvBtn").onclick = ()=>downloadCsv(gameId);
+  if (!section || !linksOut || !gameIdLabel || !viewBtn || !downloadBtn) {
+    console.error("Start page HTML is missing required elements");
+    return;
   }
+
+  section.style.display = "block";
+  gameIdLabel.textContent = gameId;
+  linksOut.innerHTML = "";
+
+  players.forEach(name => {
+    const link = `${location.origin}/submit.html?game=${gameId}&player=${encodeURIComponent(name)}`;
+    linksOut.innerHTML += `<p><strong>${name}</strong>: <a href="${link}" target="_blank">${link}</a></p>`;
+  });
+
+  viewBtn.href = `/playlist.html?game=${gameId}`;
+  downloadBtn.onclick = () => downloadCsv(gameId);
+}
+
 
   /* ====== SUBMIT PAGE LOGIC ====== */
   const form = document.getElementById("songForm");
