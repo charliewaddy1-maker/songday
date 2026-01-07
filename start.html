@@ -1,24 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Submit Songs</title>
-<link rel="stylesheet" href="style.css" />
-<script src="script.js" defer></script>
+  <title>SongDay – Start</title>
 </head>
 <body>
 
-<h1>Submit Your Songs</h1>
+<h2>Create Game</h2>
 
-<p id="submitInfo"></p>
+<textarea id="players" placeholder="One player per line"></textarea>
+<br><br>
+<button id="createGame">Create Game</button>
 
-<form id="songForm"></form>
+<p id="error" style="color:red;"></p>
 
-<button id="submitSongs">Submit Songs</button>
+<hr>
 
-<p id="submitError" style="color:red;"></p>
-<p id="submitSuccess" style="color:green;"></p>
+<div id="gameArea" style="display:none;">
+  <h3>Game ID: <span id="gameId"></span></h3>
 
+  <h4>Player Submission Links</h4>
+  <div id="links"></div>
+
+  <hr>
+
+  <a id="playlistLink">
+    <button>View Playlist</button>
+  </a>
+</div>
+
+<script src="/script.js"></script>
 </body>
 </html>
