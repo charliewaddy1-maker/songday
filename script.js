@@ -22,18 +22,22 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!data.ok) throw new Error(data.message);
 
         const linksOut = document.getElementById("linksOutput");
-        linksOut.innerHTML = `<a href="submit.html?game=${data.gameId}&player=${encodeURIComponent(playerName)}" target="_blank">Click to submit your song</a>`;
 
-        const viewBtn = document.getElementById("viewPlaylistBtn");
-        viewBtn.href = `playlist.html?game=${data.gameId}`;
-        document.getElementById("gameSection").style.display="block";
+const submitLink = `${location.origin}/submit.html?game=${data.gameId}&player=${encodeURIComponent(playerName)}`;
 
-      } catch(err){
-        error.textContent = "Error creating game";
-        console.error(err);
-      }
-    });
-  }
+linksOut.innerHTML = `
+  <p><strong>Game created!</strong></p>
+  <p>
+    <a class="btn" href="${submitLink}">
+      Submit your song
+    </a>
+  </p>
+  <p>
+    <a class="btn" href="playlist.html?game=${data.gameId}">
+      View Playlist
+    </a>
+  </p>
+`;
 
   /* ===== SUBMIT PAGE ===== */
   const form = document.getElementById("songForm");
