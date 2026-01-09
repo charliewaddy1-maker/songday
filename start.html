@@ -1,24 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SongDay Start</title>
-<link rel="stylesheet" href="style.css">
-<script src="script.js" defer></script>
+  <meta charset="UTF-8" />
+  <title>SongDay – Start</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body { font-family: Arial, sans-serif; padding: 40px; }
+    input, button { padding: 10px; font-size: 16px; }
+    button { margin-top: 10px; }
+    #output { margin-top: 20px; }
+  </style>
 </head>
 <body>
-<h1>SongDay - Start Game</h1>
 
-<div id="gameSection">
-  <p id="linksOutput"></p>
-  <a id="viewPlaylistBtn" class="btn" href="#">View Playlist</a>
-</div>
+  <h1>Start Game</h1>
 
-<label for="playerName">Enter your name:</label>
-<input type="text" id="playerName" placeholder="Your name" />
-<button id="startGame" class="btn">Start Game</button>
+  <label>
+    Enter your name:
+    <br />
+    <input id="playerName" placeholder="Charlie" />
+  </label>
+  <br />
 
-<p id="error" style="color:red"></p>
+  <button id="startGame">Start Game</button>
+
+  <div id="output"></div>
+
+  <!-- IMPORTANT -->
+  <script src="script.js"></script>
 </body>
 </html>
